@@ -4,25 +4,22 @@ $user = "myadmin@mythology-db";
 $pass = "zaqzaq@123";
 $db   = "mythology_db";
 
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
+// Connect using PDO
+try {
+    $conn = new PDO("sqlsrv:server=$server;Database=$database", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(["error" => "Connection failed: " . $conn->connect_error]);
+    echo json_encode(["error" => "Connection failed: " . $e->getMessage()]);
     exit();
 }
 
 $search = isset($_GET['search']) ? $_GET['search'] : '';
-$sql = "SELECT * FROM figures WHERE name LIKE ?";
-$stmt = $conn->prepare($sql);
-$searchParam = "%" . $search . "%";
-$stmt->bind_param("s", $searchParam);
-$stmt->execute();
-$result = $stmt->get_result();
+$query = "SELECT * FROM figures WHERE name LIKE :search";
+$stmt = $conn->prepare($query);
+$stmt->execute(['search' => "%$search%"]);
 
-$figures = [];
-while ($row = $result->fetch_assoc()) {
-    $figures[] = $row;
-}
+$figures = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 header('Content-Type: application/json');
 echo json_encode($figures);
