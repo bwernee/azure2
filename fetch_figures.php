@@ -18,7 +18,6 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
 $query = "SELECT * FROM figures WHERE name LIKE :search";
 $stmt = $conn->prepare($query);
 $stmt->execute(['search' => "%$search%"]);
-
 $figures = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 header('Content-Type: application/json');
