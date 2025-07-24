@@ -1,7 +1,10 @@
 <?php
-$host = "mythology-db.mysql.database.azure.com";
-$user = "myadmin@mythology-db";
-$pass = "zaqzaq@123";
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+$host = "loki.mysql.database.azure.com";
+$user = "admen@loki";
+$pass = "your-password"; // put your real password
 $db   = "mythology_db";
 
 $conn = new mysqli($host, $user, $pass, $db);
