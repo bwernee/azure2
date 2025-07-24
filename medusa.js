@@ -1,7 +1,7 @@
 // 🔍 Fetch figures from PHP (optional search query)
 async function fetchFigures(search = '') {
     try {
-        const response = await fetch(`fetch_figures.php?search=${encodeURIComponent(search)}`);
+        const response = await fetch('fetch_figures.php?search=' + encodeURIComponent(search));
         if (!response.ok) throw new Error('Network response was not ok');
         
         const figures = await response.json();
